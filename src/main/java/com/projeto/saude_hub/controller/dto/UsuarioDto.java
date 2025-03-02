@@ -1,10 +1,8 @@
 package com.projeto.saude_hub.controller.dto;
 
-import com.projeto.saude_hub.domain.model.TipoSanguineo;
-import com.projeto.saude_hub.domain.model.Usuario;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import com.projeto.saude_hub.domain.model.usuario.TipoSanguineo;
+import com.projeto.saude_hub.domain.model.usuario.Usuario;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 

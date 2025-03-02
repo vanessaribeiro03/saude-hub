@@ -1,4 +1,4 @@
-package com.projeto.saude_hub.domain.model;
+package com.projeto.saude_hub.domain.model.usuario;
 
 public enum TipoSanguineo {
     A_POSITIVO, A_NEGATIVO,

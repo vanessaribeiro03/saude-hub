@@ -1,7 +1,7 @@
 package com.projeto.saude_hub.service;
 
 import com.projeto.saude_hub.controller.dto.UsuarioDto;
-import com.projeto.saude_hub.domain.model.Usuario;
+import com.projeto.saude_hub.domain.model.usuario.Usuario;
 
 import java.util.List;
 import java.util.Optional;

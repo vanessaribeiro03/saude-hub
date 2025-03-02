@@ -1,7 +1,7 @@
 package com.projeto.saude_hub.controller;
 
 import com.projeto.saude_hub.controller.dto.UsuarioDto;
-import com.projeto.saude_hub.domain.model.Usuario;
+import com.projeto.saude_hub.domain.model.usuario.Usuario;
 import com.projeto.saude_hub.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

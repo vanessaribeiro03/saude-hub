@@ -1,6 +1,8 @@
 package com.projeto.saude_hub.domain.model.consulta;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -30,19 +32,21 @@ public class Consulta {
     @Column(name = "local", nullable = false)
     private String local;
 
-    @Column(name = "data_criacao", nullable = false, updatable = false)
-    private LocalDateTime dataCriacao;
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime criadoEm;
 
-    @Column(name = "data_atualizacao")
-    private LocalDateTime dataAtualizacao;
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private LocalDateTime atualizadoEm;
 
 
     public Consulta() {
     }
 
     public Consulta(Long id, LocalDateTime dataConsulta, String especialidade, String medico,
-                    StatusConsulta status, String observacoes, String local, LocalDateTime dataCriacao,
-                    LocalDateTime dataAtualizacao) {
+                    StatusConsulta status, String observacoes, String local, LocalDateTime criadoEm,
+                    LocalDateTime atualizadoEm) {
         this.id = id;
         this.dataConsulta = dataConsulta;
         this.especialidade = especialidade;
@@ -50,8 +54,8 @@ public class Consulta {
         this.status = status;
         this.observacoes = observacoes;
         this.local = local;
-        this.dataCriacao = dataCriacao;
-        this.dataAtualizacao = dataAtualizacao;
+        this.criadoEm = criadoEm;
+        this.atualizadoEm = atualizadoEm;
     }
 
     public Long getId() {
@@ -110,19 +114,19 @@ public class Consulta {
         this.local = local;
     }
 
-    public LocalDateTime getDataCriacao() {
-        return dataCriacao;
+    public LocalDateTime getCriadoEm() {
+        return criadoEm;
     }
 
-    public void setDataCriacao(LocalDateTime dataCriacao) {
-        this.dataCriacao = dataCriacao;
+    public void setCriadoEm(LocalDateTime criadoEm) {
+        this.criadoEm = criadoEm;
     }
 
-    public LocalDateTime getDataAtualizacao() {
-        return dataAtualizacao;
+    public LocalDateTime getAtualizadoEm() {
+        return atualizadoEm;
     }
 
-    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
-        this.dataAtualizacao = dataAtualizacao;
+    public void setAtualizadoEm(LocalDateTime atualizadoEm) {
+        this.atualizadoEm = atualizadoEm;
     }
 }

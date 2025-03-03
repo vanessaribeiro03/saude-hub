@@ -9,6 +9,7 @@ public interface MedicamentoService {
     MedicamentoDto create(MedicamentoDto medicamentoDto);
     List<MedicamentoDto> findAll();
     Optional<MedicamentoDto> findById(Long id);
+    List<MedicamentoDto> findByNome(String nome);
     Optional<MedicamentoDto> update(Long id, MedicamentoDto medicamentoDto);
     void delete(Long id);
 }

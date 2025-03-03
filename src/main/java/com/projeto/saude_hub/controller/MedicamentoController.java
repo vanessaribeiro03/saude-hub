@@ -38,6 +38,12 @@ public class MedicamentoController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
+    @GetMapping("/nome/{nome}")
+    public ResponseEntity<List<MedicamentoDto>> buscarMedicamentosPorNome(@PathVariable String nome) {
+        List<MedicamentoDto> medicamentos = medicamentoService.findByNome(nome);
+        return ResponseEntity.ok(medicamentos);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<MedicamentoDto> update(@PathVariable Long id, @RequestBody MedicamentoDto dto) {
         Optional<MedicamentoDto> medicamentoAtualizado = medicamentoService.update(id, dto);

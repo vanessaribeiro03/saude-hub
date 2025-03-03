@@ -4,12 +4,16 @@ import com.projeto.saude_hub.controller.dto.ExameDto;
 import com.projeto.saude_hub.controller.dto.MedicamentoDto;
 import com.projeto.saude_hub.domain.model.exame.Exame;
 import com.projeto.saude_hub.domain.model.medicamento.Medicamento;
+import com.projeto.saude_hub.domain.model.usuario.Usuario;
 import com.projeto.saude_hub.domain.repository.MedicamentoRepository;
+import com.projeto.saude_hub.domain.repository.UsuarioRepository;
 import com.projeto.saude_hub.exceptions.exame.CamposNulosExameException;
 import com.projeto.saude_hub.exceptions.exame.ExameNaoEncontradoException;
 import com.projeto.saude_hub.exceptions.medicamentos.CamposNulosMedicamentoException;
 import com.projeto.saude_hub.exceptions.medicamentos.MedicamentoNaoEncontradoException;
+import com.projeto.saude_hub.exceptions.usuario.UsuarioNaoEncontradoException;
 import com.projeto.saude_hub.service.MedicamentoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
@@ -22,15 +26,22 @@ public class MedicamentoServiceImpl implements MedicamentoService {
 
     private final MedicamentoRepository medicamentoRepository;
 
+    @Autowired
     public MedicamentoServiceImpl(MedicamentoRepository medicamentoRepository) {
         this.medicamentoRepository = medicamentoRepository;
     }
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @Override
     public MedicamentoDto create(MedicamentoDto dto) {
         if(hasCamposNulos(dto)){
             throw new CamposNulosMedicamentoException(dto);
         }
+
+        Usuario usuario = usuarioRepository.findById(dto.usuarioId())
+                .orElseThrow(() -> new UsuarioNaoEncontradoException(dto.usuarioId()));
 
         Medicamento medicamento = new Medicamento(
                 null,
@@ -39,6 +50,7 @@ public class MedicamentoServiceImpl implements MedicamentoService {
                 dto.periodo(),
                 dto.viaAdministracao(),
                 dto.instrucoesUso(),
+                usuario,
                 null,
                 null
         );
@@ -64,6 +76,14 @@ public class MedicamentoServiceImpl implements MedicamentoService {
 
         return medicamentoRepository.findById(id)
                 .map(MedicamentoDto::new);
+    }
+
+    @Override
+    public List<MedicamentoDto> findByNome(String nome) {
+        List<Medicamento> medicamentos = medicamentoRepository.findByNomeContainingIgnoreCase(nome);
+        return medicamentos.stream()
+                .map(MedicamentoDto::new)
+                .toList();
     }
 
     @Override

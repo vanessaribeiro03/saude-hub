@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 public class CamposNulosMedicamentoException extends RuntimeException {
     private static final List<String> CAMPOS_OBRIGATORIOS = Arrays.asList(
-            "nome", "dosagem", "periodo"
+            "nome", "dosagem", "periodo", "usuarioId"
     );
 
     public static List<String> getCamposObrigatorios() {

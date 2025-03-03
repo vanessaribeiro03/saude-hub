@@ -1,5 +1,6 @@
 package com.projeto.saude_hub.domain.model.medicamento;
 
+import com.projeto.saude_hub.domain.model.usuario.Usuario;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -29,6 +30,10 @@ public class Medicamento {
     @Column(nullable = true)
     private String instrucoesUso;
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime criadoEm;
@@ -40,7 +45,7 @@ public class Medicamento {
 
     public Medicamento() {}
 
-    public Medicamento(Long id, String nome, String dosagem, String periodo, String viaAdministracao, String instrucoesUso,  LocalDateTime criadoEm,
+    public Medicamento(Long id, String nome, String dosagem, String periodo, String viaAdministracao, String instrucoesUso, Usuario usuario, LocalDateTime criadoEm,
                        LocalDateTime atualizadoEm) {
         this.id = id;
         this.nome = nome;
@@ -48,6 +53,7 @@ public class Medicamento {
         this.periodo = periodo;
         this.viaAdministracao = viaAdministracao;
         this.instrucoesUso = instrucoesUso;
+        this.usuario = usuario;
         this.criadoEm = criadoEm;
         this.atualizadoEm = atualizadoEm;
     }
@@ -98,6 +104,14 @@ public class Medicamento {
 
     public void setInstrucoesUso(String instrucoesUso) {
         this.instrucoesUso = instrucoesUso;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public LocalDateTime getCriadoEm() {

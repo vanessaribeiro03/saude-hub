@@ -4,6 +4,7 @@ import com.projeto.saude_hub.controller.dto.ConsultaDto;
 import com.projeto.saude_hub.controller.dto.UsuarioDto;
 import com.projeto.saude_hub.domain.model.consulta.Consulta;
 import com.projeto.saude_hub.domain.model.exame.Exame;
+import com.projeto.saude_hub.domain.model.medicamento.Medicamento;
 import com.projeto.saude_hub.domain.model.usuario.Usuario;
 import com.projeto.saude_hub.domain.repository.UsuarioRepository;
 import com.projeto.saude_hub.exceptions.usuario.CamposNulosUsuarioException;
@@ -68,6 +69,22 @@ public class UsuarioServiceImpl implements UsuarioService {
                 .toList()
                 : new ArrayList<>();
 
+        List<Medicamento> medicamentos = (usuarioDTO.medicamentos() != null)
+                ? usuarioDTO.medicamentos().stream()
+                .map(dto -> new Medicamento(
+                        dto.id(),
+                        dto.nome(),
+                        dto.dosagem(),
+                        dto.periodo(),
+                        dto.viaAdministracao(),
+                        dto.instrucoesUso(),
+                        null,
+                        null,
+                        null
+                ))
+                .toList()
+                : new ArrayList<>();
+
         Usuario usuario = new Usuario(
                 null,
                 usuarioDTO.nome(),
@@ -79,6 +96,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                 usuarioDTO.tipoSanguineo(),
                 consultas,
                 exames,
+                medicamentos,
                 null,
                 null
         );

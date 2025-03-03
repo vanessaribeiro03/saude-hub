@@ -2,6 +2,7 @@ package com.projeto.saude_hub.domain.model.usuario;
 
 import com.projeto.saude_hub.domain.model.consulta.Consulta;
 import com.projeto.saude_hub.domain.model.exame.Exame;
+import com.projeto.saude_hub.domain.model.medicamento.Medicamento;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -46,6 +47,9 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Exame> exames = new ArrayList<>();
 
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Medicamento> medicamentos = new ArrayList<>();
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime criadoEm;
@@ -58,7 +62,7 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(Long id, String nome, String email, String senha, LocalDate dataNascimento, String telefone, String endereco, TipoSanguineo tipoSanguineo,  List<Consulta> consultas, List<Exame> exames, LocalDateTime criadoEm, LocalDateTime atualizadoEm) {
+    public Usuario(Long id, String nome, String email, String senha, LocalDate dataNascimento, String telefone, String endereco, TipoSanguineo tipoSanguineo,  List<Consulta> consultas, List<Exame> exames, List<Medicamento> medicamentos, LocalDateTime criadoEm, LocalDateTime atualizadoEm) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -69,6 +73,7 @@ public class Usuario {
         this.tipoSanguineo = tipoSanguineo;
         this.consultas = (consultas != null) ? consultas : new ArrayList<>();
         this.exames = (exames != null) ? exames : new ArrayList<>();
+        this.medicamentos = (medicamentos != null) ? medicamentos : new ArrayList<>();
         this.criadoEm = criadoEm;
         this.atualizadoEm = atualizadoEm;
     }
@@ -151,6 +156,14 @@ public class Usuario {
 
     public void setExames(List<Exame> exames) {
         this.exames = exames;
+    }
+
+    public List<Medicamento> getMedicamentos() {
+        return medicamentos;
+    }
+
+    public void setMedicamentos(List<Medicamento> medicamentos) {
+        this.medicamentos = medicamentos;
     }
 
     public LocalDateTime getCriadoEm() {

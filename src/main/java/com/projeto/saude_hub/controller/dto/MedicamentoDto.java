@@ -11,6 +11,7 @@ public record MedicamentoDto(
         String periodo,
         String viaAdministracao,
         String instrucoesUso,
+        Long usuarioId,
         LocalDateTime criadoEm,
         LocalDateTime atualizadoEm
 ) {
@@ -22,6 +23,7 @@ public record MedicamentoDto(
                 medicamento.getPeriodo(),
                 medicamento.getViaAdministracao(),
                 medicamento.getInstrucoesUso(),
+                medicamento.getUsuario().getId(),
                 medicamento.getCriadoEm(),
                 medicamento.getAtualizadoEm()
         );

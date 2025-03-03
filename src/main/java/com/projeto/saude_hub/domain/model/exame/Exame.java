@@ -2,6 +2,8 @@ package com.projeto.saude_hub.domain.model.exame;
 
 import com.projeto.saude_hub.domain.model.usuario.Usuario;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -31,9 +33,18 @@ public class Exame {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime criadoEm;
+
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private LocalDateTime atualizadoEm;
+
     public Exame() {}
 
-    public Exame(Long id, String nome, LocalDateTime dataExame, String local, String resultado, String observacoes, Usuario usuario) {
+    public Exame(Long id, String nome, LocalDateTime dataExame, String local, String resultado, String observacoes, Usuario usuario, LocalDateTime criadoEm,
+                 LocalDateTime atualizadoEm) {
         this.id = id;
         this.nome = nome;
         this.dataExame = dataExame;
@@ -41,6 +52,8 @@ public class Exame {
         this.resultado = null;
         this.observacoes = observacoes;
         this.usuario = usuario;
+        this.criadoEm = criadoEm;
+        this.atualizadoEm = atualizadoEm;
     }
 
     public Long getId() {
@@ -97,5 +110,21 @@ public class Exame {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public LocalDateTime getCriadoEm() {
+        return criadoEm;
+    }
+
+    public void setCriadoEm(LocalDateTime criadoEm) {
+        this.criadoEm = criadoEm;
+    }
+
+    public LocalDateTime getAtualizadoEm() {
+        return atualizadoEm;
+    }
+
+    public void setAtualizadoEm(LocalDateTime atualizadoEm) {
+        this.atualizadoEm = atualizadoEm;
     }
 }

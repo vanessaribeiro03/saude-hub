@@ -46,7 +46,9 @@ public class ExameServiceImpl implements ExameService {
                 exameDTO.local(),
                 null,
                 exameDTO.observacoes(),
-                usuario
+                usuario,
+                null,
+                null
         );
         return exameRepository.save(exame);
     }

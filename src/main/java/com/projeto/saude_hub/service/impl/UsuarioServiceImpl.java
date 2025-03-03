@@ -64,6 +64,8 @@ public class UsuarioServiceImpl implements UsuarioService {
                         dto.local(),
                         dto.resultado(),
                         dto.observacoes(),
+                        null,
+                        null,
                         null
                 ))
                 .toList()

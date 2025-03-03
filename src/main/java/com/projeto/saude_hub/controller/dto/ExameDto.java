@@ -11,7 +11,9 @@ public record ExameDto(
         String local,
         String resultado,
         String observacoes,
-        Long usuarioId
+        Long usuarioId,
+        LocalDateTime criadoEm,
+        LocalDateTime atualizadoEm
 ) {
     public ExameDto(Exame exame) {
         this(
@@ -21,7 +23,9 @@ public record ExameDto(
                 exame.getLocal(),
                 exame.getResultado(),
                 exame.getObservacoes(),
-                exame.getUsuario().getId()
+                exame.getUsuario().getId(),
+                exame.getCriadoEm(),
+                exame.getAtualizadoEm()
         );
     }
 }

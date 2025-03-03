@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk-alpine as build
+FROM openjdk:21-slim as build
 
 WORKDIR /workspace/app
 
@@ -13,7 +13,7 @@ RUN ./mvnw install -DskipTests
 
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
-FROM openjdk:17-jdk-alpine
+FROM openjdk:21-slim
 
 VOLUME /tmp
 

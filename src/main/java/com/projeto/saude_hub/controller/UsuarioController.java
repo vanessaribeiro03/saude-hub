@@ -32,6 +32,12 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioDto);
     }
 
+    @GetMapping("/nome/{nome}")
+    public ResponseEntity<List<UsuarioDto>> buscarUsuariosPorNome(@PathVariable String nome) {
+        List<UsuarioDto> usuarios = usuarioService.findByNome(nome);
+        return ResponseEntity.ok(usuarios);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioDto> findById(@PathVariable Long id) {
         return usuarioService.findBydId(id)

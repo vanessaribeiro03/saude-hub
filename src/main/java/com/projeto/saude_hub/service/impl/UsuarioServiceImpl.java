@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
@@ -121,6 +122,13 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public List<Usuario> findAll() {
         return usuarioRepository.findAll();
+    }
+
+    @Override
+    public List<UsuarioDto> findByNome(String nome) {
+        return usuarioRepository.findByNomeContainingIgnoreCase(nome).stream()
+                .map(UsuarioDto::new) // Mapeia para o DTO
+                .collect(Collectors.toList());
     }
 
     @Override

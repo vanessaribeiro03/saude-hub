@@ -17,6 +17,7 @@ public record UsuarioDto(
         String endereco,
         TipoSanguineo tipoSanguineo,
         List<ConsultaDto> consultas,
+        List<ExameDto> exames,
         LocalDateTime criadoEm,
         LocalDateTime atualizadoEm
 ) {
@@ -31,6 +32,7 @@ public record UsuarioDto(
                 usuario.getEndereco(),
                 usuario.getTipoSanguineo(),
                 usuario.getConsultas().stream().map(ConsultaDto::new).toList(),
+                usuario.getExames().stream().map(ExameDto::new).toList(),
                 usuario.getCriadoEm(),
                 usuario.getAtualizadoEm()
         );

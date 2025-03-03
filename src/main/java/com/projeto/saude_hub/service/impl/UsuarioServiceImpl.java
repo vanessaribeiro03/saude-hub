@@ -3,6 +3,7 @@ package com.projeto.saude_hub.service.impl;
 import com.projeto.saude_hub.controller.dto.ConsultaDto;
 import com.projeto.saude_hub.controller.dto.UsuarioDto;
 import com.projeto.saude_hub.domain.model.consulta.Consulta;
+import com.projeto.saude_hub.domain.model.exame.Exame;
 import com.projeto.saude_hub.domain.model.usuario.Usuario;
 import com.projeto.saude_hub.domain.repository.UsuarioRepository;
 import com.projeto.saude_hub.exceptions.usuario.CamposNulosUsuarioException;
@@ -53,6 +54,20 @@ public class UsuarioServiceImpl implements UsuarioService {
                 .toList()
                 : new ArrayList<>();
 
+        List<Exame> exames = (usuarioDTO.exames() != null)
+                ? usuarioDTO.exames().stream()
+                .map(dto -> new Exame(
+                        dto.id(),
+                        dto.nome(),
+                        dto.dataExame(),
+                        dto.local(),
+                        dto.resultado(),
+                        dto.observacoes(),
+                        null
+                ))
+                .toList()
+                : new ArrayList<>();
+
         Usuario usuario = new Usuario(
                 null,
                 usuarioDTO.nome(),
@@ -62,7 +77,8 @@ public class UsuarioServiceImpl implements UsuarioService {
                 usuarioDTO.telefone(),
                 usuarioDTO.endereco(),
                 usuarioDTO.tipoSanguineo(),
-               consultas,
+                consultas,
+                exames,
                 null,
                 null
         );

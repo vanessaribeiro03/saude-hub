@@ -1,14 +1,13 @@
 package com.projeto.saude_hub.service.impl;
 
-import com.projeto.saude_hub.controller.dto.ConsultaDto;
 import com.projeto.saude_hub.controller.dto.ExameDto;
-import com.projeto.saude_hub.domain.model.consulta.Consulta;
 import com.projeto.saude_hub.domain.model.exame.Exame;
+import com.projeto.saude_hub.domain.model.usuario.Usuario;
 import com.projeto.saude_hub.domain.repository.ExameRepository;
-import com.projeto.saude_hub.exceptions.consulta.CamposNulosConsultaException;
-import com.projeto.saude_hub.exceptions.consulta.ConsultaNaoEncontradaException;
+import com.projeto.saude_hub.domain.repository.UsuarioRepository;
 import com.projeto.saude_hub.exceptions.exame.CamposNulosExameException;
 import com.projeto.saude_hub.exceptions.exame.ExameNaoEncontradoException;
+import com.projeto.saude_hub.exceptions.usuario.UsuarioNaoEncontradoException;
 import com.projeto.saude_hub.service.ExameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,11 +27,17 @@ public class ExameServiceImpl implements ExameService {
         this.exameRepository = exameRepository;
     }
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
     @Override
     public Exame create(ExameDto exameDTO) {
         if(hasCamposNulos(exameDTO)){
             throw new CamposNulosExameException(exameDTO);
         }
+
+        Usuario usuario = usuarioRepository.findById(exameDTO.usuarioId())
+                .orElseThrow(() -> new UsuarioNaoEncontradoException(exameDTO.usuarioId()));
 
         Exame exame = new Exame(
                 null,
@@ -40,7 +45,8 @@ public class ExameServiceImpl implements ExameService {
                 exameDTO.dataExame(),
                 exameDTO.local(),
                 null,
-                exameDTO.observacoes()
+                exameDTO.observacoes(),
+                usuario
         );
         return exameRepository.save(exame);
     }

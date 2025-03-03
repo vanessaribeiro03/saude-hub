@@ -1,5 +1,6 @@
 package com.projeto.saude_hub.domain.model.exame;
 
+import com.projeto.saude_hub.domain.model.usuario.Usuario;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -26,15 +27,20 @@ public class Exame {
     @Column
     private String observacoes;
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
+
     public Exame() {}
 
-    public Exame(Long id, String nome, LocalDateTime dataExame, String local, String resultado, String observacoes) {
+    public Exame(Long id, String nome, LocalDateTime dataExame, String local, String resultado, String observacoes, Usuario usuario) {
         this.id = id;
         this.nome = nome;
         this.dataExame = dataExame;
         this.local = local;
         this.resultado = null;
         this.observacoes = observacoes;
+        this.usuario = usuario;
     }
 
     public Long getId() {
@@ -83,5 +89,13 @@ public class Exame {
 
     public void setObservacoes(String observacoes) {
         this.observacoes = observacoes;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }

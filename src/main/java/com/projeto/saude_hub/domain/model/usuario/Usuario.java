@@ -3,6 +3,7 @@ package com.projeto.saude_hub.domain.model.usuario;
 import com.projeto.saude_hub.domain.model.consulta.Consulta;
 import com.projeto.saude_hub.domain.model.exame.Exame;
 import com.projeto.saude_hub.domain.model.medicamento.Medicamento;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -24,6 +25,7 @@ public class Usuario {
     private String nome;
 
     @Column(nullable = false, unique = true)
+    @Schema(example = "email@email.com.br")
     private String email;
 
     @Column(nullable = false)

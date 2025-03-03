@@ -1,22 +1,19 @@
 package com.projeto.saude_hub.service.impl;
 
-import com.projeto.saude_hub.controller.dto.ExameDto;
 import com.projeto.saude_hub.controller.dto.MedicamentoDto;
-import com.projeto.saude_hub.domain.model.exame.Exame;
 import com.projeto.saude_hub.domain.model.medicamento.Medicamento;
 import com.projeto.saude_hub.domain.model.usuario.Usuario;
 import com.projeto.saude_hub.domain.repository.MedicamentoRepository;
 import com.projeto.saude_hub.domain.repository.UsuarioRepository;
-import com.projeto.saude_hub.exceptions.exame.CamposNulosExameException;
-import com.projeto.saude_hub.exceptions.exame.ExameNaoEncontradoException;
-import com.projeto.saude_hub.exceptions.medicamentos.CamposNulosMedicamentoException;
+import com.projeto.saude_hub.exceptions.CamposNulosException;
 import com.projeto.saude_hub.exceptions.medicamentos.MedicamentoNaoEncontradoException;
 import com.projeto.saude_hub.exceptions.usuario.UsuarioNaoEncontradoException;
+import com.projeto.saude_hub.infra.CampoUtil;
 import com.projeto.saude_hub.service.MedicamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,12 +33,13 @@ public class MedicamentoServiceImpl implements MedicamentoService {
 
     @Override
     public MedicamentoDto create(MedicamentoDto dto) {
-        if(hasCamposNulos(dto)){
-            throw new CamposNulosMedicamentoException(dto);
+        List<String> camposObrigatorios = Arrays.asList(  "nome", "dosagem", "periodo", "usuarioId");
+        if(CampoUtil.hasCamposNulosGenerico(dto, camposObrigatorios)){
+            throw new CamposNulosException("Campos obrigatórios não podem ser nulos.");
         }
 
         Usuario usuario = usuarioRepository.findById(dto.usuarioId())
-                .orElseThrow(() -> new UsuarioNaoEncontradoException(dto.usuarioId()));
+                .orElseThrow(() -> new UsuarioNaoEncontradoException("Usuário não encontrado."));
 
         Medicamento medicamento = new Medicamento(
                 null,
@@ -71,7 +69,7 @@ public class MedicamentoServiceImpl implements MedicamentoService {
         Optional<Medicamento> medicamento = medicamentoRepository.findById(id);
 
         if(medicamento.isEmpty()){
-            throw new MedicamentoNaoEncontradoException(id);
+            throw new MedicamentoNaoEncontradoException("Medicamento não encontrado.");
         }
 
         return medicamentoRepository.findById(id)
@@ -89,7 +87,7 @@ public class MedicamentoServiceImpl implements MedicamentoService {
     @Override
     public Optional<MedicamentoDto> update(Long id, MedicamentoDto dto) {
         Medicamento medicamento = medicamentoRepository.findById(id)
-                .orElseThrow(() -> new MedicamentoNaoEncontradoException(id));
+                .orElseThrow(() -> new MedicamentoNaoEncontradoException("Medicamento não encontrado."));
 
         medicamento.setNome(dto.nome());
         medicamento.setDosagem(dto.dosagem());
@@ -106,27 +104,10 @@ public class MedicamentoServiceImpl implements MedicamentoService {
         Optional<Medicamento> medicamento = medicamentoRepository.findById(id);
 
         if(medicamento.isEmpty()){
-            throw new MedicamentoNaoEncontradoException(id);
+            throw new MedicamentoNaoEncontradoException("Medicamento não encontrado.");
         }
 
         medicamentoRepository.deleteById(id);
     }
 
-    private boolean hasCamposNulos(MedicamentoDto medicamentoDto) {
-        for (Field field : medicamentoDto.getClass().getDeclaredFields()) {
-            if (!CamposNulosMedicamentoException.getCamposObrigatorios().contains(field.getName())) {
-                continue;
-            }
-
-            field.setAccessible(true);
-            try {
-                if (field.get(medicamentoDto) == null) {
-                    return true;
-                }
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException("Erro ao verificar campos nulos.", e);
-            }
-        }
-        return false;
-    }
 }

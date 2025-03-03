@@ -1,21 +1,21 @@
 package com.projeto.saude_hub.service.impl;
 
-import com.projeto.saude_hub.controller.dto.ConsultaDto;
 import com.projeto.saude_hub.controller.dto.UsuarioDto;
 import com.projeto.saude_hub.domain.model.consulta.Consulta;
 import com.projeto.saude_hub.domain.model.exame.Exame;
 import com.projeto.saude_hub.domain.model.medicamento.Medicamento;
 import com.projeto.saude_hub.domain.model.usuario.Usuario;
 import com.projeto.saude_hub.domain.repository.UsuarioRepository;
-import com.projeto.saude_hub.exceptions.usuario.CamposNulosUsuarioException;
+import com.projeto.saude_hub.exceptions.CamposNulosException;
 import com.projeto.saude_hub.exceptions.usuario.EmailExisteException;
 import com.projeto.saude_hub.exceptions.usuario.UsuarioNaoEncontradoException;
+import com.projeto.saude_hub.infra.CampoUtil;
 import com.projeto.saude_hub.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,8 +31,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Usuario create(UsuarioDto usuarioDTO){
-        if(hasCamposNulos(usuarioDTO)){
-            throw new CamposNulosUsuarioException(usuarioDTO);
+        List<String> camposObrigatorios = Arrays.asList( "nome", "email", "senha", "dataNascimento");
+        if(CampoUtil.hasCamposNulosGenerico(usuarioDTO, camposObrigatorios)){
+            throw new CamposNulosException("Campos obrigatórios não podem ser nulos.");
         }
 
         if(usuarioRepository.existsByEmail(usuarioDTO.email())){
@@ -111,7 +112,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         Optional<Usuario> usuario = usuarioRepository.findById(id);
 
         if(usuario.isEmpty()){
-            throw new UsuarioNaoEncontradoException(id);
+            throw new UsuarioNaoEncontradoException("Usuário não encontrado");
         }
 
         return usuario.map(UsuarioDto::new);
@@ -124,7 +125,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Optional<UsuarioDto> update(Long id, UsuarioDto usuarioDto) {
-        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new UsuarioNaoEncontradoException(id));
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new UsuarioNaoEncontradoException("Usuário não encontrado."));
 
         if (usuarioRepository.existsByEmailAndIdNot(usuarioDto.email(), id)) {
             throw new EmailExisteException();
@@ -148,28 +149,10 @@ public class UsuarioServiceImpl implements UsuarioService {
         Optional<Usuario> usuario = usuarioRepository.findById(id);
 
         if(usuario.isEmpty()){
-            throw new UsuarioNaoEncontradoException(id);
+            throw new UsuarioNaoEncontradoException("Usuário não encontrado.");
         }
 
         usuarioRepository.deleteById(id);
-    }
-
-    private boolean hasCamposNulos(UsuarioDto usuarioDTO) {
-        for (Field field : usuarioDTO.getClass().getDeclaredFields()) {
-            if (!CamposNulosUsuarioException.getCamposObrigatorios().contains(field.getName())) {
-                continue;
-            }
-
-            field.setAccessible(true);
-            try {
-                if (field.get(usuarioDTO) == null) {
-                    return true;
-                }
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException("Erro ao verificar campos nulos", e);
-            }
-        }
-        return false;
     }
 
 }

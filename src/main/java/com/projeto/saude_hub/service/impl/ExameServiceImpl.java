@@ -5,14 +5,15 @@ import com.projeto.saude_hub.domain.model.exame.Exame;
 import com.projeto.saude_hub.domain.model.usuario.Usuario;
 import com.projeto.saude_hub.domain.repository.ExameRepository;
 import com.projeto.saude_hub.domain.repository.UsuarioRepository;
-import com.projeto.saude_hub.exceptions.exame.CamposNulosExameException;
+import com.projeto.saude_hub.exceptions.CamposNulosException;
 import com.projeto.saude_hub.exceptions.exame.ExameNaoEncontradoException;
 import com.projeto.saude_hub.exceptions.usuario.UsuarioNaoEncontradoException;
+import com.projeto.saude_hub.infra.CampoUtil;
 import com.projeto.saude_hub.service.ExameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,12 +33,13 @@ public class ExameServiceImpl implements ExameService {
 
     @Override
     public Exame create(ExameDto exameDTO) {
-        if(hasCamposNulos(exameDTO)){
-            throw new CamposNulosExameException(exameDTO);
+        List<String> camposObrigatorios = Arrays.asList( "nome", "dataExame", "local", "usuarioId");
+        if(CampoUtil.hasCamposNulosGenerico(exameDTO, camposObrigatorios)){
+            throw new CamposNulosException("Campos obrigatórios não podem ser nulos.");
         }
 
         Usuario usuario = usuarioRepository.findById(exameDTO.usuarioId())
-                .orElseThrow(() -> new UsuarioNaoEncontradoException(exameDTO.usuarioId()));
+                .orElseThrow(() -> new UsuarioNaoEncontradoException("Usuário não encontrado."));
 
         Exame exame = new Exame(
                 null,
@@ -58,7 +60,7 @@ public class ExameServiceImpl implements ExameService {
         Optional<Exame> exame = exameRepository.findById(id);
 
         if(exame.isEmpty()){
-            throw new ExameNaoEncontradoException(id);
+            throw new ExameNaoEncontradoException("Exame não encontrado.");
         }
 
         return exameRepository.findById(id).map(ExameDto::new);
@@ -81,7 +83,7 @@ public class ExameServiceImpl implements ExameService {
     @Override
     public Optional<ExameDto> update(Long id, ExameDto exameDTO) {
         Exame exame = exameRepository.findById(id)
-                .orElseThrow(() -> new ExameNaoEncontradoException(id));
+                .orElseThrow(() -> new ExameNaoEncontradoException("Usuário não encontrado."));
 
         exame.setNome(exameDTO.nome());
         exame.setDataExame(exameDTO.dataExame());
@@ -98,27 +100,9 @@ public class ExameServiceImpl implements ExameService {
         Optional<Exame> exame = exameRepository.findById(id);
 
         if(exame.isEmpty()){
-            throw new ExameNaoEncontradoException(id);
+            throw new ExameNaoEncontradoException("Exame não encontrado.");
         }
 
         exameRepository.deleteById(id);
-    }
-
-    private boolean hasCamposNulos(ExameDto exameDto) {
-        for (Field field : exameDto.getClass().getDeclaredFields()) {
-            if (!CamposNulosExameException.getCamposObrigatorios().contains(field.getName())) {
-                continue;
-            }
-
-            field.setAccessible(true);
-            try {
-                if (field.get(exameDto) == null) {
-                    return true;
-                }
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException("Erro ao verificar campos nulos.", e);
-            }
-        }
-        return false;
     }
 }

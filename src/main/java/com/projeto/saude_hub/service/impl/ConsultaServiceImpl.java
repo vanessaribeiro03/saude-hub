@@ -6,14 +6,15 @@ import com.projeto.saude_hub.domain.model.consulta.StatusConsulta;
 import com.projeto.saude_hub.domain.model.usuario.Usuario;
 import com.projeto.saude_hub.domain.repository.ConsultaRepository;
 import com.projeto.saude_hub.domain.repository.UsuarioRepository;
-import com.projeto.saude_hub.exceptions.consulta.CamposNulosConsultaException;
+import com.projeto.saude_hub.exceptions.CamposNulosException;
 import com.projeto.saude_hub.exceptions.consulta.ConsultaNaoEncontradaException;
 import com.projeto.saude_hub.exceptions.usuario.UsuarioNaoEncontradoException;
+import com.projeto.saude_hub.infra.CampoUtil;
 import com.projeto.saude_hub.service.ConsultaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,12 +34,13 @@ public class ConsultaServiceImpl implements ConsultaService {
 
     @Override
     public Consulta create(ConsultaDto consultaDTO) {
-        if(hasCamposNulos(consultaDTO)){
-            throw new CamposNulosConsultaException(consultaDTO);
+        List<String> camposObrigatorios = Arrays.asList( "dataConsulta", "especialidade", "medico", "status", "local", "usuarioId");
+        if(CampoUtil.hasCamposNulosGenerico(consultaDTO, camposObrigatorios)){
+            throw new CamposNulosException("Campos obrigatórios não podem ser nulos.");
         }
 
         Usuario usuario = usuarioRepository.findById(consultaDTO.usuarioId())
-                .orElseThrow(() -> new UsuarioNaoEncontradoException(consultaDTO.usuarioId()));
+                .orElseThrow(() -> new UsuarioNaoEncontradoException("teste")); // aqui
 
         Consulta consulta = new Consulta(
                 null,
@@ -61,7 +63,7 @@ public class ConsultaServiceImpl implements ConsultaService {
         Optional<Consulta> consulta = consultaRepository.findById(id);
 
         if(consulta.isEmpty()){
-            throw new ConsultaNaoEncontradaException(id);
+            throw new ConsultaNaoEncontradaException("Consulta não encontrada.");
         }
         return consultaRepository.findById(id).map(ConsultaDto::new);
     }
@@ -83,8 +85,7 @@ public class ConsultaServiceImpl implements ConsultaService {
 
     @Override
     public Optional<ConsultaDto> update(Long id, ConsultaDto consultaDto) {
-        Consulta consulta = consultaRepository.findById(id)
-                .orElseThrow(() -> new ConsultaNaoEncontradaException(id));
+        Consulta consulta = consultaRepository.findById(id).orElseThrow(() -> new ConsultaNaoEncontradaException("Consulta não encontrada.")); // aqui
 
         consulta.setDataConsulta(consultaDto.dataConsulta());
         consulta.setEspecialidade(consultaDto.especialidade());
@@ -103,28 +104,10 @@ public class ConsultaServiceImpl implements ConsultaService {
         Optional<Consulta> consulta = consultaRepository.findById(id);
 
         if(consulta.isEmpty()){
-            throw new ConsultaNaoEncontradaException(id);
+            throw new ConsultaNaoEncontradaException("Consulta não encontrada.");
         }
 
         consultaRepository.deleteById(id);
-    }
-
-    private boolean hasCamposNulos(ConsultaDto consultaDTO) {
-        for (Field field : consultaDTO.getClass().getDeclaredFields()) {
-            if (!CamposNulosConsultaException.getCamposObrigatorios().contains(field.getName())) {
-                continue;
-            }
-
-            field.setAccessible(true);
-            try {
-                if (field.get(consultaDTO) == null) {
-                    return true;
-                }
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException("Erro ao verificar campos nulos.", e);
-            }
-        }
-        return false;
     }
 
 }

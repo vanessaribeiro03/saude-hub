@@ -3,9 +3,9 @@ package com.projeto.saude_hub.service.impl;
 import com.projeto.saude_hub.controller.dto.UsuarioDto;
 import com.projeto.saude_hub.domain.model.usuario.Usuario;
 import com.projeto.saude_hub.domain.repository.UsuarioRepository;
-import com.projeto.saude_hub.exceptions.CamposNulosException;
-import com.projeto.saude_hub.exceptions.EmailExisteException;
-import com.projeto.saude_hub.exceptions.UsuarioNaoEncontradoException;
+import com.projeto.saude_hub.exceptions.usuario.CamposNulosUsuarioException;
+import com.projeto.saude_hub.exceptions.usuario.EmailExisteException;
+import com.projeto.saude_hub.exceptions.usuario.UsuarioNaoEncontradoException;
 import com.projeto.saude_hub.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public Usuario create(UsuarioDto usuarioDTO){
         if(hasCamposNulos(usuarioDTO)){
-            throw new CamposNulosException(usuarioDTO);
+            throw new CamposNulosUsuarioException(usuarioDTO);
         }
 
         if(usuarioRepository.existsByEmail(usuarioDTO.email())){
@@ -100,7 +100,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     private boolean hasCamposNulos(UsuarioDto usuarioDTO) {
         for (Field field : usuarioDTO.getClass().getDeclaredFields()) {
-            if (!CamposNulosException.getCamposObrigatorios().contains(field.getName())) {
+            if (!CamposNulosUsuarioException.getCamposObrigatorios().contains(field.getName())) {
                 continue;
             }
 

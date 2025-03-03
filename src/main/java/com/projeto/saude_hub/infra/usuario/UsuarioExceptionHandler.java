@@ -1,8 +1,9 @@
-package com.projeto.saude_hub.infra;
+package com.projeto.saude_hub.infra.usuario;
 
-import com.projeto.saude_hub.exceptions.CamposNulosException;
-import com.projeto.saude_hub.exceptions.EmailExisteException;
-import com.projeto.saude_hub.exceptions.UsuarioNaoEncontradoException;
+import com.projeto.saude_hub.exceptions.usuario.CamposNulosUsuarioException;
+import com.projeto.saude_hub.exceptions.usuario.EmailExisteException;
+import com.projeto.saude_hub.exceptions.usuario.UsuarioNaoEncontradoException;
+import com.projeto.saude_hub.infra.RestErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -10,10 +11,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+public class UsuarioExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(CamposNulosException.class)
-    private ResponseEntity<RestErrorMessage> camposNulos(CamposNulosException exception){
+    @ExceptionHandler(CamposNulosUsuarioException.class)
+    private ResponseEntity<RestErrorMessage> camposNulos(CamposNulosUsuarioException exception){
         RestErrorMessage errorMessage = new RestErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }

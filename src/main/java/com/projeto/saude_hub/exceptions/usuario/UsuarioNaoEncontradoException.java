@@ -1,4 +1,4 @@
-package com.projeto.saude_hub.exceptions;
+package com.projeto.saude_hub.exceptions.usuario;
 
 public class UsuarioNaoEncontradoException extends RuntimeException{
     public UsuarioNaoEncontradoException(Long id){

@@ -1,11 +1,11 @@
-package com.projeto.saude_hub.exceptions;
+package com.projeto.saude_hub.exceptions.usuario;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CamposNulosException extends RuntimeException {
+public class CamposNulosUsuarioException extends RuntimeException {
     private static final List<String> CAMPOS_OBRIGATORIOS = Arrays.asList(
             "nome", "email", "senha", "dataNascimento"
     );
@@ -14,7 +14,7 @@ public class CamposNulosException extends RuntimeException {
         return CAMPOS_OBRIGATORIOS;
     }
 
-    public CamposNulosException(Object objeto) {
+    public CamposNulosUsuarioException(Object objeto) {
         super("Campos obrigatórios não podem ser nulos: " + getCamposNulos(objeto));
     }
 

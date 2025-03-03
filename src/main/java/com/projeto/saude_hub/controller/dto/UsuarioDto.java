@@ -5,6 +5,7 @@ import com.projeto.saude_hub.domain.model.usuario.Usuario;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record UsuarioDto(
         Long id,
@@ -15,6 +16,7 @@ public record UsuarioDto(
         String telefone,
         String endereco,
         TipoSanguineo tipoSanguineo,
+        List<ConsultaDto> consultas,
         LocalDateTime criadoEm,
         LocalDateTime atualizadoEm
 ) {
@@ -28,6 +30,7 @@ public record UsuarioDto(
                 usuario.getTelefone(),
                 usuario.getEndereco(),
                 usuario.getTipoSanguineo(),
+                usuario.getConsultas().stream().map(ConsultaDto::new).toList(),
                 usuario.getCriadoEm(),
                 usuario.getAtualizadoEm()
         );

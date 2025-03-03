@@ -1,6 +1,8 @@
 package com.projeto.saude_hub.service.impl;
 
+import com.projeto.saude_hub.controller.dto.ConsultaDto;
 import com.projeto.saude_hub.controller.dto.UsuarioDto;
+import com.projeto.saude_hub.domain.model.consulta.Consulta;
 import com.projeto.saude_hub.domain.model.usuario.Usuario;
 import com.projeto.saude_hub.domain.repository.UsuarioRepository;
 import com.projeto.saude_hub.exceptions.usuario.CamposNulosUsuarioException;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +37,22 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new EmailExisteException();
         }
 
+        List<Consulta> consultas = (usuarioDTO.consultas() != null)
+                ? usuarioDTO.consultas().stream()
+                .map(dto -> new Consulta(
+                        dto.id(),
+                        dto.dataConsulta(),
+                        dto.especialidade(),
+                        dto.medico(),
+                        dto.status(),
+                        dto.observacoes(),
+                        dto.local(),
+                        null,
+                        null,
+                        null))
+                .toList()
+                : new ArrayList<>();
+
         Usuario usuario = new Usuario(
                 null,
                 usuarioDTO.nome(),
@@ -43,6 +62,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                 usuarioDTO.telefone(),
                 usuarioDTO.endereco(),
                 usuarioDTO.tipoSanguineo(),
+               consultas,
                 null,
                 null
         );

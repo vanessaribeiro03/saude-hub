@@ -1,5 +1,6 @@
 package com.projeto.saude_hub.domain.model.consulta;
 
+import com.projeto.saude_hub.domain.model.usuario.Usuario;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -32,6 +33,10 @@ public class Consulta {
     @Column(name = "local", nullable = false)
     private String local;
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime criadoEm;
@@ -45,7 +50,7 @@ public class Consulta {
     }
 
     public Consulta(Long id, LocalDateTime dataConsulta, String especialidade, String medico,
-                    StatusConsulta status, String observacoes, String local, LocalDateTime criadoEm,
+                    StatusConsulta status, String observacoes, String local, Usuario usuario, LocalDateTime criadoEm,
                     LocalDateTime atualizadoEm) {
         this.id = id;
         this.dataConsulta = dataConsulta;
@@ -54,6 +59,7 @@ public class Consulta {
         this.status = status;
         this.observacoes = observacoes;
         this.local = local;
+        this.usuario = usuario;
         this.criadoEm = criadoEm;
         this.atualizadoEm = atualizadoEm;
     }
@@ -112,6 +118,14 @@ public class Consulta {
 
     public void setLocal(String local) {
         this.local = local;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public LocalDateTime getCriadoEm() {

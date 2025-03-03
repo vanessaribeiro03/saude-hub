@@ -3,9 +3,12 @@ package com.projeto.saude_hub.service.impl;
 import com.projeto.saude_hub.controller.dto.ConsultaDto;
 import com.projeto.saude_hub.domain.model.consulta.Consulta;
 import com.projeto.saude_hub.domain.model.consulta.StatusConsulta;
+import com.projeto.saude_hub.domain.model.usuario.Usuario;
 import com.projeto.saude_hub.domain.repository.ConsultaRepository;
+import com.projeto.saude_hub.domain.repository.UsuarioRepository;
 import com.projeto.saude_hub.exceptions.consulta.CamposNulosConsultaException;
 import com.projeto.saude_hub.exceptions.consulta.ConsultaNaoEncontradaException;
+import com.projeto.saude_hub.exceptions.usuario.UsuarioNaoEncontradoException;
 import com.projeto.saude_hub.service.ConsultaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,11 +28,17 @@ public class ConsultaServiceImpl implements ConsultaService {
         this.consultaRepository = consultaRepository;
     }
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
     @Override
     public Consulta create(ConsultaDto consultaDTO) {
         if(hasCamposNulos(consultaDTO)){
             throw new CamposNulosConsultaException(consultaDTO);
         }
+
+        Usuario usuario = usuarioRepository.findById(consultaDTO.usuarioId())
+                .orElseThrow(() -> new UsuarioNaoEncontradoException(consultaDTO.usuarioId()));
 
         Consulta consulta = new Consulta(
                 null,
@@ -39,6 +48,7 @@ public class ConsultaServiceImpl implements ConsultaService {
                 consultaDTO.status(),
                 consultaDTO.observacoes(),
                 consultaDTO.local(),
+                usuario,
                 null,
                 null
         );

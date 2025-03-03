@@ -13,6 +13,7 @@ public record ConsultaDto(
         StatusConsulta status,
         String observacoes,
         String local,
+        Long usuarioId,
         LocalDateTime criadoEm,
         LocalDateTime atualizadoEm
 ) {
@@ -26,6 +27,7 @@ public record ConsultaDto(
                 consulta.getStatus(),
                 consulta.getObservacoes(),
                 consulta.getLocal(),
+                consulta.getUsuario().getId(),
                 consulta.getCriadoEm(),
                 consulta.getAtualizadoEm()
         );

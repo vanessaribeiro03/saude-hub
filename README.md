@@ -64,6 +64,64 @@ O SaúdeHub oferece as seguintes funcionalidades para o gerenciamento de informa
 Esses endpoints ajudam a centralizar e gerenciar todas as informações de saúde, mantendo o usuário no controle total de seus cuidados.
 
 ## 💾 Modelagem do sistema
+### Diagram de Classes
+```mermaid
+classDiagram
+    class Usuario {
+        +Long id
+        +String nome
+        +String email
+        +String senha
+        +LocalDate dataNascimento
+        +String telefone
+        +String endereco
+        +TipoSanguineo tipoSanguineo
+        +LocalDateTime criadoEm
+        +LocalDateTime atualizadoEm
+    }
+
+    class Consulta {
+        +Long id
+        +LocalDateTime dataConsulta
+        +String especialidade
+        +String medico
+        +StatusConsulta status
+        +String observacoes
+        +String local
+        +LocalDateTime criadoEm
+        +LocalDateTime atualizadoEm
+    }
+
+    class Exame {
+        +Long id
+        +String nome
+        +LocalDateTime dataExame
+        +String local
+        +String resultado
+        +String observacoes
+        +LocalDateTime criadoEm
+        +LocalDateTime atualizadoEm
+    }
+
+    class Medicamento {
+        +Long id
+        +String nome
+        +String dosagem
+        +String periodo
+        +String viaAdministracao
+        +String instrucoesUso
+        +LocalDateTime criadoEm
+        +LocalDateTime atualizadoEm
+    }
+
+    Usuario "1" -- "0..*" Consulta : possui
+    Usuario "1" -- "0..*" Exame : possui
+    Usuario "1" -- "0..*" Medicamento : possui
+    Consulta "1" -- "1" Usuario : pertence a
+    Exame "1" -- "1" Usuario : pertence a
+    Medicamento "1" -- "1" Usuario : pertence a
+
+```
 ### Diagrama Entidade-Relacionamento (DER)
 <img src="https://ik.imagekit.io/ajt99blle/saudehub.png?updatedAt=1741113638475" width="700"/>
 
@@ -91,13 +149,23 @@ $ mvn clean install
 spring.datasource.username=seu-username
 spring.datasource.password=sua-senha
 
+# Altere para o perfil dev no arquivo application.properties
+spring.profiles.active=dev
+
 # Execute a aplicação pelo SaudeHubApplication.java
 $ run 
 ```
 A aplicação estará disponível em `http://localhost:8080` juntamente com o swagger.
 
+### **Observação:**
+#### Alternando entre os perfis no arquivo application.properties
+Para alternar entre as configurações Local e Remota, abra o arquivo application.properties e utilize uma das 2 opções abaixo:
+- spring.profiles.active=dev 🡢 O Spring executará a aplicação com a configuração do Banco de dados local (MySQL)
+- spring.profiles.active=prod 🡢 O Spring executará a aplicação com a configuração do Banco de dados na nuvem (Render)
+
 ## Deploy
-O deploy da aplicação esta disponivel [neste link]()
+O deploy da aplicação está disponivel [neste link](https://saudehub.onrender.com)
+
 
 ## 🛠 Tecnologias
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)

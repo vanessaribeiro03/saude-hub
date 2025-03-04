@@ -11,6 +11,7 @@
  <a href="#-funcionalidades">Funcionalidades</a> •
  <a href="#-modelagem-do-sistema">Modelagem do sistema</a> • 
  <a href="#-como-executar-o-projeto">Como executar</a> • 
+<a href="#-deploy">Deploy</a> • 
  <a href="#-tecnologias">Tecnologias</a> •  
  <a href="#licença">Licença</a>
 </p>
@@ -90,10 +91,13 @@ $ mvn clean install
 spring.datasource.username=seu-username
 spring.datasource.password=sua-senha
 
-# Execute a aplicação pelo Application.java
+# Execute a aplicação pelo SaudeHubApplication.java
 $ run 
 ```
 A aplicação estará disponível em `http://localhost:8080` juntamente com o swagger.
+
+## Deploy
+O deploy da aplicação esta disponivel [neste link]()
 
 ## 🛠 Tecnologias
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)
@@ -106,3 +110,4 @@ A aplicação estará disponível em `http://localhost:8080` juntamente com o sw
 ## Licença
 
 Feito com ❤️ por Vanessa Ribeiro 👋🏽 [Entre em contato!](https://www.linkedin.com/in/vanessaribeiro-/)
+

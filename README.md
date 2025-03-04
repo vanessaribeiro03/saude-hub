@@ -125,7 +125,7 @@ classDiagram
 ### Diagrama Entidade-Relacionamento (DER)
 <img src="https://ik.imagekit.io/ajt99blle/saudehub.png?updatedAt=1741113638475" width="700"/>
 
-## 🚀 Como executar o projeto
+## ⚡ Como executar o projeto
 ### Pré-requisitos
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
 
@@ -163,7 +163,7 @@ Para alternar entre as configurações Local e Remota, abra o arquivo applicatio
 - spring.profiles.active=dev 🡢 O Spring executará a aplicação com a configuração do Banco de dados local (MySQL)
 - spring.profiles.active=prod 🡢 O Spring executará a aplicação com a configuração do Banco de dados na nuvem (Render)
 
-## Deploy
+## 🚀 Deploy
 O deploy da aplicação está disponivel [neste link](https://saudehub.onrender.com)
 
 
@@ -175,7 +175,7 @@ O deploy da aplicação está disponivel [neste link](https://saudehub.onrender.
 ![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
 ![Maven](https://img.shields.io/badge/apache_maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)
 
-## Licença
+## 📝Licença
 
 Feito com ❤️ por Vanessa Ribeiro 👋🏽 [Entre em contato!](https://www.linkedin.com/in/vanessaribeiro-/)
 

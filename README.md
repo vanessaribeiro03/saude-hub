@@ -9,11 +9,10 @@
 <p align="center">
  <a href="#-sobre-o-projeto">Sobre</a> •
  <a href="#-funcionalidades">Funcionalidades</a> •
- <a href="#-layout">Layout</a> • 
+ <a href="#-modelagem-do-sistema">Modelagem do sistema</a> • 
  <a href="#-como-executar-o-projeto">Como executar</a> • 
- <a href="#-tecnologias">Tecnologias</a> • 
- <a href="#-autora">Autora</a> • 
- <a href="#user-content--licença">Licença</a>
+ <a href="#-tecnologias">Tecnologias</a> •  
+ <a href="#licença">Licença</a>
 </p>
 
 ## 📄 Sobre o Projeto
@@ -62,3 +61,48 @@ O SaúdeHub oferece as seguintes funcionalidades para o gerenciamento de informa
 - `DELETE /medicamentos/:id`: Deleta um medicamento pelo ID.
 
 Esses endpoints ajudam a centralizar e gerenciar todas as informações de saúde, mantendo o usuário no controle total de seus cuidados.
+
+## 💾 Modelagem do sistema
+### Diagrama Entidade-Relacionamento (DER)
+<img src="https://ik.imagekit.io/ajt99blle/saudehub.png?updatedAt=1741113638475" width="700"/>
+
+## 🚀 Como executar o projeto
+### Pré-requisitos
+Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
+
+- Java 21 ou versão superior
+- Maven (ou Gradle, dependendo do seu gerenciador de dependências preferido, caso esteja utilizando outro)
+- MySQL 
+- IDE como IntelliJ IDEA ou Eclipse 
+
+### Agora é só seguir os seguintes passos:
+```bash
+# CLone este repositório
+$ git clone git@github.com:seu-perfil/saude-hub.git
+
+# Acesse a pasta do projeto no terminal/cmd
+$ cd saude-hub
+
+# Instale as dependências 
+$ mvn clean install
+
+# Altere as informações do banco de dados no application-dev.properties
+spring.datasource.username=seu-username
+spring.datasource.password=sua-senha
+
+# Execute a aplicação pelo Application.java
+$ run 
+```
+A aplicação estará disponível em `http://localhost:8080` juntamente com o swagger.
+
+## 🛠 Tecnologias
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
+![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=white)
+![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
+![Maven](https://img.shields.io/badge/apache_maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)
+
+## Licença
+
+Feito com ❤️ por Vanessa Ribeiro 👋🏽 [Entre em contato!](https://www.linkedin.com/in/vanessaribeiro-/)

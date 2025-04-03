@@ -38,7 +38,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         if(usuarioRepository.existsByEmail(usuarioDTO.email())){
-            throw new EmailExisteException();
+            throw new EmailExisteException("O email informado já está em uso.");
         }
 
         List<Consulta> consultas = (usuarioDTO.consultas() != null)
@@ -127,7 +127,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public List<UsuarioDto> findByNome(String nome) {
         return usuarioRepository.findByNomeContainingIgnoreCase(nome).stream()
-                .map(UsuarioDto::new) // Mapeia para o DTO
+                .map(UsuarioDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -136,7 +136,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new UsuarioNaoEncontradoException("Usuário não encontrado."));
 
         if (usuarioRepository.existsByEmailAndIdNot(usuarioDto.email(), id)) {
-            throw new EmailExisteException();
+            throw new EmailExisteException("O email informado já está em uso.");
         }
 
         usuario.setNome(usuarioDto.nome());

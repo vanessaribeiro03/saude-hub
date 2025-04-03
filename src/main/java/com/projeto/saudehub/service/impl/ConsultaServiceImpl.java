@@ -40,7 +40,7 @@ public class ConsultaServiceImpl implements ConsultaService {
         }
 
         Usuario usuario = usuarioRepository.findById(consultaDTO.usuarioId())
-                .orElseThrow(() -> new UsuarioNaoEncontradoException("teste")); // aqui
+                .orElseThrow(() -> new UsuarioNaoEncontradoException("Usuário não encontrado."));
 
         Consulta consulta = new Consulta(
                 null,
@@ -85,7 +85,7 @@ public class ConsultaServiceImpl implements ConsultaService {
 
     @Override
     public Optional<ConsultaDto> update(Long id, ConsultaDto consultaDto) {
-        Consulta consulta = consultaRepository.findById(id).orElseThrow(() -> new ConsultaNaoEncontradaException("Consulta não encontrada.")); // aqui
+        Consulta consulta = consultaRepository.findById(id).orElseThrow(() -> new ConsultaNaoEncontradaException("Consulta não encontrada."));
 
         consulta.setDataConsulta(consultaDto.dataConsulta());
         consulta.setEspecialidade(consultaDto.especialidade());
